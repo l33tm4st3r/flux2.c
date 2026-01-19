@@ -34,21 +34,6 @@ void rocm_group_norm(float *out, const float *x, const float *gamma,
                      const float *beta, int batch, int channels, int H, int W,
                      int num_groups, float eps);
 
-/* ROCm / HIP Kernels Interface */
-void *rocm_malloc(size_t size);
-void rocm_free(void *ptr);
-void rocm_memcpy_h2d(void *dst, const void *src, size_t size);
-void rocm_memcpy_d2h(void *dst, const void *src, size_t size);
-void rocm_memset(void *dst, int val, size_t size);
-void rocm_silu(float *x, int n);
-void rocm_add(float *out, const float *a, const float *b, int n);
-void rocm_add_inplace(float *a, const float *b, int n);
-void rocm_upsample_nearest(float *out, const float *in, int batch, int channels,
-                           int H, int W, int scale);
-void rocm_group_norm(float *out, const float *x, const float *gamma,
-                     const float *beta, int batch, int channels, int H, int W,
-                     int num_groups, float eps);
-
 /* ========================================================================
  * VAE Data Structures
  * ======================================================================== */

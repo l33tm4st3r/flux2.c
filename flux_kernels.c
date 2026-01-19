@@ -27,6 +27,7 @@
 
 /* Minimum matrix size to use GPU (smaller matrices are faster on CPU) */
 #define MIN_GPU_ELEMENTS (512 * 512)
+#define MAX_IM2COL_MEM (512L * 1024 * 1024) /* 512MB threshold for fallback */
 
 /* Progress callbacks - set by caller before inference */
 flux_substep_callback_t flux_substep_callback = NULL;
@@ -357,8 +358,9 @@ void flux_conv2d(float *out, const float *in, const float *weight,
   /* im2col + BLAS optimization */
   size_t col_size_elements = (size_t)in_ch * kH * kW * outH * outW;
 
-  /* Fallback to naive if allocation would be too large (>512MB) to avoid OOM */
-  if (col_size_elements * sizeof(float) > 512 * 1024 * 1024) {
+  /* Fallback to naive if allocation would be too large (>MAX_IM2COL_MEM) to
+   * avoid OOM */
+  if (col_size_elements * sizeof(float) > MAX_IM2COL_MEM) {
     goto naive_fallback;
   }
 
